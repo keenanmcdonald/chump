@@ -5,6 +5,7 @@ tempo = 80
 drawCircle = false
 rec = 0
 pre = 1
+play = 0
 
 
 voice = 1
@@ -15,6 +16,7 @@ inc = scrubRate * dt
 
 
 function grain_func()
+  print('grain func')
   softcut.position(voice, pos)
   pos = pos + inc
 end
@@ -74,6 +76,10 @@ function redraw()
     screen.move(0,40)
     screen.text('recording')
   end
+  if play == 1 then
+    screen.move(0,60)
+    screen.text('playing')
+  end
   screen.update()
 end
 
@@ -90,11 +96,12 @@ end
 
 function key(n, z)
   if n == 3 and z==1 then
-    m:start()
-    softcut.play (1,1)
-    print('softcut play', softcut)
+    --m:start()
+    if play==0 then play = 1 else play = 0 end
+    softcut.play (1,play)
   elseif n==2 and z==1 then
     if rec==0 then rec = 1 else rec = 0 end
     softcut.rec_level(1,rec)
   end
+  redraw()
 end
